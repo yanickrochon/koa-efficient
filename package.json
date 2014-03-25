@@ -1,0 +1,42 @@
+{
+  "name": "koa-efficient",
+  "version": "0.0.1",
+  "description": "co-efficient template engine middleware for Koa",
+  "author": "Yanick Rochon <yanick.rochon@gmail.com>",
+  "keywords": [
+    "co-efficient",
+    "efficient",
+    "koa",
+    "middleware",
+    "template",
+    "templating",
+    "view",
+    "renderer"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --harmony"
+  },
+  "homepage": "https://github.com/yanickrochon/koa-efficient",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yanickrochon/koa-efficient"
+  },
+  "bugs": {
+    "url": "https://github.com/yanickrochon/koa-efficient/issues"
+  },
+  "dependencies": {
+    "co-efficient": "*",
+    "delegates": "0.0.3",
+    "merge-descriptors": "0.0.2",
+    "debug": "^0.7.4"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "semicov": "^0.1.1-2",
+    "co-mocha": "0.0.2",
+    "supertest": "^0.10.0",
+    "koa": "^0.5.2",
+    "should": "^3.2.0-beta1"
+  }
+}

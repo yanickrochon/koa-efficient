@@ -1,0 +1,77 @@
+# Koa Efficient
+
+co-efficient template engine middleware for Koa
+
+
+## Install
+
+`npm install koa-efficient --save`
+
+
+## Example
+
+```js
+var efficient = require('koa-efficient');
+var koa = require('koa');
+
+var app = koa();
+app.use(efficient({
+  config: {
+    paths: './views',
+    helpers: {
+      foo: function * (stream, ctx, chunk, params) {
+        stream.write('FOO!');
+      }
+    }
+  }
+}))
+```
+
+
+## Options
+
+* **config** *{Object}* : passed directly to `co-efficient`'s engine. See
+[co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s configuration
+for more information.
+* **data** *{Object}* : an object of global data passed to the template.
+
+
+## Usage
+
+You can always enable compression by setting `this.compress = true`.
+You can always disable compression by setting `this.compress = false`.
+This bypasses the filter check.
+
+```js
+app.use(function (next) {
+  yield this.render('view-template', {
+    title: 'Hello world!'
+  });
+})
+```
+
+The above snippet, given the configuration above, will render `./views/view-template.coeft.html`.
+
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2014 Mind2Soft <yanick.rochon@mind2soft.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
