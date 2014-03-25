@@ -11,8 +11,16 @@ describe('Test middleware', function () {
     var app = koa();
 
     app.use(middleware({
-      config: {
-        paths: path.join(__dirname, 'fixtures')
+      layout: 'layout',
+      layoutOptions: {
+        config: {
+          paths: path.join(__dirname, 'fixtures')
+        },
+      },
+      viewOptions: {
+        config: {
+          paths: path.join(__dirname, 'fixtures')
+        },
       },
       data: {
         'title': 'Test Template',

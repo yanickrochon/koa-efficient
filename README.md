@@ -16,8 +16,16 @@ var koa = require('koa');
 
 var app = koa();
 app.use(efficient({
-  config: {
-    paths: './views',
+  layout: 'main',
+  layoutOptions: {
+    config: {
+      paths: './layouts'
+    }
+  },
+  viewOptions: {
+    config: {
+      paths: './views'
+    },
     helpers: {
       foo: function * (stream, ctx, chunk, params) {
         stream.write('FOO!');
@@ -30,10 +38,14 @@ app.use(efficient({
 
 ## Options
 
-* **config** *{Object}* : passed directly to `co-efficient`'s engine. See
-[co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s configuration
-for more information.
 * **data** *{Object}* : an object of global data passed to the template.
+* **layout** *{String}* : set the layout's name. Set to false to disable the layout.
+* **layoutOptions** *{Object}* : passed directly to `co-efficient` engine's layout
+instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s
+configuration for more information.
+* **viewOptions** *{Object}* : passed directly to `co-efficient` engine's view
+instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s
+configuration for more information.
 
 
 ## Usage
@@ -46,11 +58,12 @@ This bypasses the filter check.
 app.use(function (next) {
   yield this.render('view-template', {
     title: 'Hello world!'
-  });
+  }, 'other-layout');
 })
 ```
 
-The above snippet, given the configuration above, will render `./views/view-template.coeft.html`.
+The above snippet, given the configuration above, will render `./views/view-template.coeft.html`,
+using the layout `./layouts/other-layout.coeft.html`.
 
 
 ## License
