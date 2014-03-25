@@ -22,8 +22,9 @@ module.exports = coefficient;
  * @api public
  */
 function coefficient(options) {
-  var viewEngine;
-  var layoutEngine;
+  var viewEngine = options.viewEngine;
+  var layoutEngine = options.layoutEngine;
+
 
   return function * (next) {
     var req = this.request;
@@ -81,6 +82,8 @@ function coefficient(options) {
 
     if (!viewEngine) {
       viewEngine = new Engine(options.viewOptions || {});
+    }
+    if (!layoutEngine) {
       layoutEngine = new Engine(options.layoutOptions || {});
     }
 

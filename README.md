@@ -43,9 +43,13 @@ app.use(efficient({
 * **layoutOptions** *{Object}* : passed directly to `co-efficient` engine's layout
 instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s
 configuration for more information.
+* **layoutEngine** *{coefficient.Engine}* : the coefficient template engine to use
+when rendering the layouts. When this is specified, **layoutOptions** are ignored.
 * **viewOptions** *{Object}* : passed directly to `co-efficient` engine's view
 instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s
 configuration for more information.
+* **viewEngine** *{coefficient.Engine}* : the coefficient template engine to use
+when rendering the views. When this is specified, **viewOptions** are ignored.
 
 
 ## Usage
