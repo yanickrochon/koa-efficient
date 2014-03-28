@@ -69,6 +69,16 @@ app.use(function (next) {
 The above snippet, given the configuration above, will render `./views/view-template.coeft.html`,
 using the layout `./layouts/other-layout.coeft.html`.
 
+To disable the layout (render only the view), pass `false` as layout name.
+
+```js
+app.use(function (next) {
+  yield this.render('view-template', {
+    title: 'Hello world!'
+  }, false);
+})
+```
+
 
 ## License
 

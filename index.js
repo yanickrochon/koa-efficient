@@ -90,7 +90,9 @@ function coefficient(options) {
     res.render = function * (view, data, layout) {
       view = view || defaultView(req);
 
-      layout = layout || options.layout || false;
+      if (layout !== false) {
+        layout = layout || options.layout || false;
+      }
 
       options.data && (data = combine(options.data || {}, data)) || {};
 
