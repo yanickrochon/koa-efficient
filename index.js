@@ -22,6 +22,8 @@ module.exports = coefficient;
  * @api public
  */
 function coefficient(options) {
+  options = options || {};
+
   var viewEngine = options.viewEngine;
   var layoutEngine = options.layoutEngine;
 
@@ -30,8 +32,6 @@ function coefficient(options) {
     var req = this.request;
     var res = this.app.response;
     var ctx = this.app.context;
-
-    options = options || {};
 
     if (!ctx.viewData) {
       merge(ctx, {
@@ -110,12 +110,16 @@ function coefficient(options) {
 
     delegate(ctx, 'response').method('render');
 
-    try {
+    if (options.handleErrors) {
+      try {
+        yield next;
+      } catch (err) {
+        this.status = err.status || 500;
+        this.body = err.message || require('http').STATUS_CODES[this.status];
+        this.app.emit('error', err, this);
+      }
+    } else {
       yield next;
-    } catch (err) {
-      this.status = err.status || 500;
-      this.body = err.message || require('http').STATUS_CODES[this.status];
-      this.app.emit('error', err, this);
     }
   };
 }
