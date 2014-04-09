@@ -1,6 +1,6 @@
 {
   "name": "koa-efficient",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "co-efficient template engine middleware for Koa",
   "author": "Yanick Rochon <yanick.rochon@gmail.com>",
   "keywords": [
@@ -26,7 +26,7 @@
     "url": "https://github.com/yanickrochon/koa-efficient/issues"
   },
   "dependencies": {
-    "co-efficient": "*",
+    "co-efficient": "latest",
     "delegates": "0.0.3",
     "merge-descriptors": "0.0.2",
     "debug": "^0.7.4"

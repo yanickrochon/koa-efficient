@@ -1,6 +1,14 @@
 # Koa Efficient
 
-co-efficient template engine middleware for Koa
+[`co-efficient`](https://github.com/yanickrochon/co-efficient) template engine middleware for Koa
+
+
+## Features
+
+* Asynchronous templates with `co-efficient`.
+* Dual engines configuration (layouts + views)
+* Preset global data
+* Optional basic error handling in response
 
 
 ## Install
@@ -50,6 +58,8 @@ instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configu
 configuration for more information.
 * **viewEngine** *{coefficient.Engine}* : the coefficient template engine to use
 when rendering the views. When this is specified, **viewOptions** are ignored.
+* **handleErrors** *{Boolean}* : optionally handle errors automatically and set
+the status and response body. *(default `false`)*
 
 
 ## Usage
