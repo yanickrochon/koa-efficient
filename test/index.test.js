@@ -25,7 +25,8 @@ describe('Test middleware', function () {
       data: {
         'title': 'Test Template',
         'header': 'Page'
-      }
+      },
+      debug: true
     }));
 
     app.use(function * () {

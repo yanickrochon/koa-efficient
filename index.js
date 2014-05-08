@@ -5,7 +5,7 @@
 var Engine = require('co-efficient').Engine;
 var delegate = require('delegates');
 var merge = require('merge-descriptors');
-var debug = require('debug');
+var debug = require('debug')('koa-efficient');
 
 /**
  * Exports `coefficient`.
@@ -16,9 +16,13 @@ module.exports = coefficient;
  * Add `render` method and define `locals` getter and
  * setters.
  *
- * @param {String} path (optional)
- * @param {String} ext
- * @param {Object} map (optional)
+ *   Options :
+ *    - viewEngine {Engine}     the Co-Efficient engine to render views
+ *    - layoutEngine {Engine}   the Co-Efficient engine to render layouts
+ *    - data {Object}           (Optional) a global data object which will be merged with the rendering data
+ *    - debug {Boolean}         print debug traces
+ *
+ * @param {Object} options    the module options.
  * @api public
  */
 function coefficient(options) {
@@ -26,7 +30,7 @@ function coefficient(options) {
 
   var viewEngine = options.viewEngine;
   var layoutEngine = options.layoutEngine;
-
+  var showDebug = options.debug;
 
   return function * (next) {
     var req = this.request;
@@ -94,16 +98,17 @@ function coefficient(options) {
         layout = layout || options.layout || false;
       }
 
-      options.data && (data = combine(options.data || {}, data)) || {};
+      data = options.data && combine(options.data, data || {}) || {};
+      data.req = this.req; // make visible the current request in the view
 
       if (layout) {
-        debug('render view `%s` with %s', view, JSON.stringify(data));
+        showDebug && debug('render view `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
         data.body = yield viewEngine.render(view, data);
 
-        debug('render layout `%s` with %s', layout, JSON.stringify(data));
+        showDebug && debug('render layout `%s` with %s', layout, JSON.stringify(data, stringifyReplacer(), 2));
         this.body = yield layoutEngine.render(layout, data);
       } else {
-        debug('render `%s` with %s', view, JSON.stringify(data));
+        showDebug && debug('render `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
         this.body = yield viewEngine.render(view, data);
       }
     };
@@ -148,4 +153,19 @@ function combine (a, b) {
   for (var k in a) { r[k] = a[k]; }
   for (var k in b) { r[k] = b[k]; }
   return r;
+}
+
+function stringifyReplacer() {
+  var cache = [];
+  return function (key, value) {
+    if (typeof value === 'object' && value !== null) {
+      if (cache.indexOf(value) !== -1) {
+        // Circular reference found, discard key
+        return '[Circular]';
+      }
+      // Store value in our collection
+      cache.push(value);
+    }
+    return value;
+  };
 }
