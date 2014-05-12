@@ -34,9 +34,9 @@
   "license": "MIT",
   "devDependencies": {
     "semicov": "^0.1.1-2",
-    "co-mocha": "0.0.2",
-    "supertest": "^0.12.0",
-    "koa": "^0.6.0",
+    "co-mocha": "0.0.4",
+    "supertest": "^0.12.1",
+    "koa": "^0.6.1",
     "should": "^3.3.1"
   }
 }
