@@ -18,7 +18,10 @@ module.exports = coefficient;
  *
  *   Options :
  *    - viewEngine {Engine}     the Co-Efficient engine to render views
+ *    - viewOptions {Object}    the Co-Efficient engine view options (ignored if viewEngine is specified)
  *    - layoutEngine {Engine}   the Co-Efficient engine to render layouts
+ *    - layoutOptions {Object}  the Co-Efficient engine layout options (ignored if layoutEngine is specified)
+ *    - contextMap {Object}     define the context mapping
  *    - data {Object}           (Optional) a global data object which will be merged with the rendering data
  *    - debug {Boolean}         print debug traces
  *
@@ -35,10 +38,11 @@ function coefficient(options) {
   return function * (next) {
     var req = this.request;
     var res = this.app.response;
-    var ctx = this.app.context;
+    var appCtx = this.app.context;
+    var ctx = this;
 
-    if (!ctx.viewData) {
-      merge(ctx, {
+    if (!appCtx.viewData) {
+      merge(appCtx, {
         /**
          * Get locals.
          *
@@ -99,7 +103,8 @@ function coefficient(options) {
       }
 
       data = options.data && combine(options.data, data || {}) || {};
-      data.req = this.req; // make visible the current request in the view
+
+      options.contextMap && mapContextToData(ctx, data, options.contextMap);
 
       if (layout) {
         showDebug && debug('render view `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
@@ -113,7 +118,7 @@ function coefficient(options) {
       }
     };
 
-    delegate(ctx, 'response').method('render');
+    delegate(appCtx, 'response').method('render');
 
     if (options.handleErrors) {
       try {
@@ -168,4 +173,42 @@ function stringifyReplacer() {
     }
     return value;
   };
+}
+
+
+function mapContextToData(ctx, data, mapping) {
+  var keys = Object.keys(mapping);
+  var key;
+  var ctxInfo;
+  var dataInfo;
+  var i = 0;
+  var iLen = keys.length;
+
+  function getOrCreateKey(src, path, create) {
+    var info;
+    var p;
+
+    path = path.split('.');
+    info = {
+      key: path.pop(),
+      el: src
+    };
+
+    while (path.length) {
+      p = path.shift();
+      info.el = info.el && info.el[p] || (create && (info.el[p] = {}) || {});
+    }
+
+    return info;
+  }
+
+  for (; i < iLen; ++i) {
+    key = keys[i];
+    ctxInfo = getOrCreateKey(ctx, key);
+
+    if (ctxInfo.el[ctxInfo.key]) {
+      dataInfo = getOrCreateKey(data, mapping[key], true);
+      dataInfo.el[dataInfo.key] = ctxInfo.el[ctxInfo.key];
+    }
+  }
 }

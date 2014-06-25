@@ -39,6 +39,11 @@ app.use(efficient({
         stream.write('FOO!');
       }
     }
+  },
+
+  // expose passport's user to the views and layouts as 'identity'
+  contextMap: {
+    'passport.user': 'identity'
   }
 }))
 ```
@@ -60,6 +65,9 @@ configuration for more information.
 when rendering the views. When this is specified, **viewOptions** are ignored.
 * **handleErrors** *{Boolean}* : optionally handle errors automatically and set
 the status and response body. *(default `false`)*
+* **contextMap** *{Object}* : if any request's context data needs to be exposed to the view,
+this will map the context (`this`) object's value to the data, overwritting any previous
+value.
 
 
 ## Usage
