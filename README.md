@@ -98,6 +98,49 @@ app.use(function (next) {
 ```
 
 
+## ContextMap
+
+When rendering a template and/or layout, instead of manually processing the current
+request's `this` context, mapping a `data` object to send to the rendering engines,
+`koa-efficient` can perform a automated transformation instead.
+
+For example, you may transform
+
+```javascript
+var efficient = require('koa-efficient');
+
+app.use(efficient({
+  ...
+}));
+
+app.use(function * () {
+  var data = {
+    username: this.passport.identifier,
+    cartItems: this.session.cartItems
+  };
+
+  this.render('foo', data);
+});
+```
+
+into
+
+```javascript
+var efficient = require('koa-efficient');
+
+app.use(efficient({
+  ...
+  contextMap: {
+    'passport.identifier': 'username',
+    'session.cartItems': 'cartItems'
+  }
+}));
+
+app.use(function * () {
+  this.render('foo');
+});
+```
+
 ## License
 
 The MIT License (MIT)

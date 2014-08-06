@@ -1,6 +1,6 @@
 {
   "name": "koa-efficient",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "co-efficient template engine middleware for Koa",
   "author": "Yanick Rochon <yanick.rochon@gmail.com>",
   "keywords": [
