@@ -53,29 +53,16 @@ app.use(efficient({
 
 * **data** *{Object}* : an object of global data passed to the template.
 * **layout** *{String}* : set the layout's name. Set to false to disable the layout.
-* **layoutOptions** *{Object}* : passed directly to `co-efficient` engine's layout
-instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s
-configuration for more information.
-* **layoutEngine** *{coefficient.Engine}* : the coefficient template engine to use
-when rendering the layouts. When this is specified, **layoutOptions** are ignored.
-* **viewOptions** *{Object}* : passed directly to `co-efficient` engine's view
-instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s
-configuration for more information.
-* **viewEngine** *{coefficient.Engine}* : the coefficient template engine to use
-when rendering the views. When this is specified, **viewOptions** are ignored.
-* **handleErrors** *{Boolean}* : optionally handle errors automatically and set
-the status and response body. *(default `false`)*
+* **layoutOptions** *{Object}* : passed directly to `co-efficient` engine's layout instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s configuration for more information.
+* **layoutEngine** *{coefficient.Engine}* : the coefficient template engine to use when rendering the layouts. When this is specified, **layoutOptions** are ignored.
+* **viewOptions** *{Object}* : passed directly to `co-efficient` engine's view instance. See [co-efficent](https://github.com/yanickrochon/co-efficient#configuration)'s configuration for more information.
+* **viewEngine** *{coefficient.Engine}* : the coefficient template engine to use when rendering the views. When this is specified, **viewOptions** are ignored.
+* **handleErrors** *{Boolean}* : optionally handle errors automatically and set the status and response body. *(default `false`)*
 * **httpHeaders** *{Object}* : define any HTTP headers to set after *after* successful rendering. The object may specify getters for dynamic headers.
-* **contextMap** *{Object}* : if any request's context data needs to be exposed to the view,
-this will map the context (`this`) object's value to the data, overwritting any previous
-value.
+* **contextMap** *{Object}* : if any request's context data needs to be exposed to the view, this will map the context (`this`) object's value to the data, overwritting any previous value.
 
 
 ## Usage
-
-You can always enable compression by setting `this.compress = true`.
-You can always disable compression by setting `this.compress = false`.
-This bypasses the filter check.
 
 ```js
 app.use(function (next) {
@@ -85,8 +72,7 @@ app.use(function (next) {
 })
 ```
 
-The above snippet, given the configuration above, will render `./views/view-template.coeft.html`,
-using the layout `./layouts/other-layout.coeft.html`.
+The above snippet, given the configuration above, will render `./views/view-template.coeft.html`, using the layout `./layouts/other-layout.coeft.html`.
 
 To disable the layout (render only the view), pass `false` as layout name.
 
@@ -101,9 +87,7 @@ app.use(function (next) {
 
 ## ContextMap
 
-When rendering a template and/or layout, instead of manually processing the current
-request's `this` context, mapping a `data` object to send to the rendering engines,
-`koa-efficient` can perform a automated transformation instead.
+When rendering a template and/or layout, instead of manually processing the current request's `this` context, mapping a `data` object to send to the rendering engines, `koa-efficient` can perform a automated transformation instead.
 
 For example, you may transform
 
