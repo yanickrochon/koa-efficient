@@ -126,4 +126,42 @@ describe('Test middleware', function () {
 
   });
 
+
+  it('should send headers', function (done) {
+    var app = koa();
+    var headerValue;
+
+    app.use(middleware({
+      httpHeaders: {
+        get foo() { 
+          return headerValue = Math.random() + '-' + Date.now();
+        }
+      },
+      viewOptions: {
+        config: {
+          paths: path.join(__dirname, 'fixtures')
+        },
+      },
+      debug: true
+    }));
+
+    app.use(function * () {
+      yield this.render('template');
+    });
+
+    request(app.listen())
+      .get('/')
+      .expect(200)
+      .end(function(err, result){
+        if (err) return done(err);
+
+        result.header.foo.should.equal(headerValue);
+
+        done();
+      });
+
+    this.timeout(500);
+
+  })
+
 });

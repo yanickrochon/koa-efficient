@@ -24,6 +24,7 @@ module.exports = coefficient;
  *    - contextMap {Object}     define the context mapping
  *    - data {Object}           (Optional) a global data object which will be merged with the rendering data
  *    - debug {Boolean}         print debug traces
+ *    - httpHeaders {Object}    some HTTP headers to set (object may use getters)
  *
  * @param {Object} options    the module options.
  * @api public
@@ -34,6 +35,7 @@ function coefficient(options) {
   var viewEngine = options.viewEngine;
   var layoutEngine = options.layoutEngine;
   var showDebug = options.debug;
+  var httpHeaderKeys = Object.keys(options.httpHeaders || {});
 
   return function * (next) {
     var req = this.request;
@@ -96,6 +98,10 @@ function coefficient(options) {
     }
 
     res.render = function * (view, data, layout) {
+      var i;
+      var iLen;
+      var headerKey;
+
       view = view || defaultView(req);
 
       if (layout !== false) {
@@ -116,6 +122,14 @@ function coefficient(options) {
         showDebug && debug('render `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
         this.body = yield viewEngine.render(view, data);
       }
+
+      if (httpHeaderKeys.length) {
+        for (i = 0, iLen = httpHeaderKeys.length; i < iLen; ++i) {
+          headerKey = httpHeaderKeys[i];
+          this.set(headerKey, options.httpHeaders[headerKey]);
+        }
+      }
+
     };
 
     delegate(appCtx, 'response').method('render');
