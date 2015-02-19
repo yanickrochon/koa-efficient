@@ -97,42 +97,43 @@ function coefficient(options) {
       layoutEngine = new Engine(options.layoutOptions || {});
     }
 
-    res.render = function * (view, data, layout) {
-      var i;
-      var iLen;
-      var headerKey;
+    if (!res.body) {
+      res.render = function * (view, data, layout) {
+        var i;
+        var iLen;
+        var headerKey;
 
-      view = view || defaultView(req);
+        view = view || defaultView(req);
 
-      if (layout !== false) {
-        layout = layout || options.layout || false;
-      }
-
-      data = options.data && combine(options.data, data || {}) || {};
-
-      options.contextMap && mapContextToData(ctx, data, options.contextMap);
-
-      if (layout) {
-        showDebug && debug('render view `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
-        data.body = yield viewEngine.render(view, data);
-
-        showDebug && debug('render layout `%s` with %s', layout, JSON.stringify(data, stringifyReplacer(), 2));
-        this.body = yield layoutEngine.render(layout, data);
-      } else {
-        showDebug && debug('render `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
-        this.body = yield viewEngine.render(view, data);
-      }
-
-      if (httpHeaderKeys.length) {
-        for (i = 0, iLen = httpHeaderKeys.length; i < iLen; ++i) {
-          headerKey = httpHeaderKeys[i];
-          this.set(headerKey, options.httpHeaders[headerKey]);
+        if (layout !== false) {
+          layout = layout || options.layout || false;
         }
-      }
 
-    };
+        data = options.data && combine(options.data, data || {}) || {};
 
-    delegate(appCtx, 'response').method('render');
+        options.contextMap && mapContextToData(ctx, data, options.contextMap);
+
+        if (layout) {
+          showDebug && debug('render view `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
+          data.body = yield viewEngine.render(view, data);
+
+          showDebug && debug('render layout `%s` with %s', layout, JSON.stringify(data, stringifyReplacer(), 2));
+          this.body = yield layoutEngine.render(layout, data);
+        } else {
+          showDebug && debug('render `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
+          this.body = yield viewEngine.render(view, data);
+        }
+
+        if (httpHeaderKeys.length) {
+          for (i = 0, iLen = httpHeaderKeys.length; i < iLen; ++i) {
+            headerKey = httpHeaderKeys[i];
+            this.set(headerKey, options.httpHeaders[headerKey]);
+          }
+        }
+
+      };
+      delegate(appCtx, 'response').method('render');
+    }
 
     if (options.handleErrors) {
       try {
