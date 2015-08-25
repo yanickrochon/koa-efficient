@@ -101,27 +101,53 @@ function coefficient(options) {
       res.render = function * (view, data, layout) {
         var i;
         var iLen;
+        var j;
+        var jLen;
         var headerKey;
+        var viewKeys;
+        var viewKey;
+        var viewTemplate;
 
         view = view || defaultView(req);
 
-        if (layout !== false) {
-          layout = layout || options.layout || false;
+        if (typeof view === 'string') {
+          view = {
+            body: view
+          };
         }
+        viewKeys = Object.keys(view);
 
         data = options.data && combine(options.data, data || {}) || {};
 
         options.contextMap && mapContextToData(ctx, data, options.contextMap);
 
-        if (layout) {
-          showDebug && debug('render view `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
-          data.body = yield viewEngine.render(view, data);
+        for (i = 0, iLen = viewKeys.length; i < iLen; ++i) {
+          viewKey = viewKeys[i];
+          viewTemplate = view[viewKey];
 
+          if (Array.isArray(viewTemplate)) {
+            data[viewKey] = '';
+
+            for (j = 0, jLen = viewTemplate.length; j < jLen; ++j) {
+              showDebug && debug('render view `%s` as `%s` with %s', viewTemplate[j], viewKey, JSON.stringify(data, stringifyReplacer(), 2));
+              data[viewKey] = data[viewKey] + (yield viewEngine.render(viewTemplate[j], data));
+            }
+          } else {
+            showDebug && debug('render view `%s` as `%s` with %s', viewTemplate, viewKey, JSON.stringify(data, stringifyReplacer(), 2));
+            data[viewKey] = yield viewEngine.render(viewTemplate, data);
+          }
+        }
+        
+        if (layout !== false) {
+          layout = layout || options.layout || false;
+        }
+
+        if (layout) {
           showDebug && debug('render layout `%s` with %s', layout, JSON.stringify(data, stringifyReplacer(), 2));
           this.body = yield layoutEngine.render(layout, data);
         } else {
           showDebug && debug('render `%s` with %s', view, JSON.stringify(data, stringifyReplacer(), 2));
-          this.body = yield viewEngine.render(view, data);
+          this.body = data['body'] || '';
         }
 
         if (httpHeaderKeys.length) {
