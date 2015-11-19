@@ -37,6 +37,13 @@ function coefficient(options) {
   var showDebug = options.debug;
   var httpHeaderKeys = Object.keys(options.httpHeaders || {});
 
+  if (!viewEngine) {
+    viewEngine = new Engine(options.viewOptions || {});
+  }
+  if (!layoutEngine) {
+    layoutEngine = new Engine(options.layoutOptions || {});
+  }
+
   return function * (next) {
     var req = this.request;
     var res = this.app.response;
@@ -88,13 +95,6 @@ function coefficient(options) {
         }
 
       });
-    }
-
-    if (!viewEngine) {
-      viewEngine = new Engine(options.viewOptions || {});
-    }
-    if (!layoutEngine) {
-      layoutEngine = new Engine(options.layoutOptions || {});
     }
 
     if (!res.body) {
