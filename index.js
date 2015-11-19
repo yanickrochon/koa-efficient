@@ -108,6 +108,10 @@ function coefficient(options) {
         var viewKey;
         var viewTemplate;
 
+        if (layout !== false) {
+          layout = layout || options.layout || false;
+        }
+
         view = view || defaultView(req);
 
         if (typeof view === 'string') {
@@ -138,10 +142,6 @@ function coefficient(options) {
           }
         }
         
-        if (layout !== false) {
-          layout = layout || options.layout || false;
-        }
-
         if (layout) {
           showDebug && debug('render layout `%s` with %s', layout, JSON.stringify(data, stringifyReplacer(), 2));
           this.body = yield layoutEngine.render(layout, data);
