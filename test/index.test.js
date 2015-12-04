@@ -80,9 +80,9 @@ describe('Test middleware', function () {
         'header': 'Page'
       },
       contextMap: {
-        'req.foo.user.login': 'user',
-        'req.foo.a.b.c.d.e.f': 'str.hello',
-        'unknown.key': 'INVALID.value'
+        'user': 'req.foo.user.login',
+        'str.hello': 'req.foo.a.b.c.d.e.f',
+        'INVALID.value': 'unknown.key'
       },
       debug: true
     }));
