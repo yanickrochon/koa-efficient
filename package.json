@@ -1,10 +1,11 @@
 {
   "name": "koa-efficient",
-  "version": "0.1.5",
-  "description": "co-efficient template engine middleware for Koa",
+  "version": "1.0.0",
+  "description": "Efficient template engine middleware for Koa",
   "author": "Yanick Rochon <yanick.rochon@gmail.com>",
   "keywords": [
-    "co-efficient",
+    "async",
+    "promise",
     "efficient",
     "koa",
     "middleware",
@@ -15,7 +16,9 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "mocha --harmony"
+    "test": "mocha",
+    "test-cov": "istanbul cover _mocha",
+    "test-travis": "istanbul cover _mocha --report lcovonly"
   },
   "homepage": "https://github.com/yanickrochon/koa-efficient",
   "repository": {
@@ -26,17 +29,17 @@
     "url": "https://github.com/yanickrochon/koa-efficient/issues"
   },
   "dependencies": {
-    "co-efficient": "latest",
-    "delegates": "0.0.3",
-    "merge-descriptors": "0.0.2",
-    "debug": "^2.0.0"
+    "debug": "^2.2.0",
+    "delegates": "0.1.0",
+    "efficient": "1.0.2-rc",
+    "merge-descriptors": "1.0.0"
   },
   "license": "MIT",
   "devDependencies": {
-    "semicov": "^0.1.1-2",
-    "co-mocha": "1.0.1",
-    "supertest": "^0.13.0",
-    "koa": "^0.11.0",
-    "should": "^4.0.4"
+    "istanbul": "^0.4.1",
+    "koa": "^1.1.2",
+    "mocha": "^2.3.4",
+    "should": "^7.1.1",
+    "supertest": "^1.1.0"
   }
 }

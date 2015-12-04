@@ -1,11 +1,14 @@
 
-var request = require('supertest');
-var koa = require('koa');
-var path = require('path');
-
-var middleware = require('..');
 
 describe('Test middleware', function () {
+
+  var request = require('supertest');
+  var koa = require('koa');
+  var path = require('path');
+
+  var Engine = require('efficient').Engine;
+
+  var middleware = require('..');
 
   it('should render', function (done) {
     var app = koa();
@@ -13,14 +16,14 @@ describe('Test middleware', function () {
     app.use(middleware({
       layout: 'layout',
       layoutOptions: {
-        config: {
-          paths: path.join(__dirname, 'fixtures')
-        },
+        paths: {
+          '*': path.join(__dirname, 'fixtures')
+        }
       },
       viewOptions: {
-        config: {
-          paths: path.join(__dirname, 'fixtures')
-        },
+        paths: {
+          '*': path.join(__dirname, 'fixtures')
+        }
       },
       data: {
         'title': 'Test Template',
@@ -63,14 +66,14 @@ describe('Test middleware', function () {
     app.use(middleware({
       layout: 'layout',
       layoutOptions: {
-        config: {
-          paths: path.join(__dirname, 'fixtures')
-        },
+        paths: {
+          '*': path.join(__dirname, 'fixtures')
+        }
       },
       viewOptions: {
-        config: {
-          paths: path.join(__dirname, 'fixtures')
-        },
+        paths: {
+          '*': path.join(__dirname, 'fixtures')
+        }
       },
       data: {
         'title': 'Test Template',
@@ -137,11 +140,16 @@ describe('Test middleware', function () {
           return headerValue = Math.random() + '-' + Date.now();
         }
       },
-      viewOptions: {
-        config: {
-          paths: path.join(__dirname, 'fixtures')
-        },
-      },
+      layoutEngine: Engine({
+        paths: {
+          '*': path.join(__dirname, 'fixtures')
+        }
+      }),
+      viewEngine: Engine({
+        paths: {
+          '*': path.join(__dirname, 'fixtures')
+        }
+      }),
       debug: true
     }));
 

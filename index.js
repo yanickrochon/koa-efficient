@@ -2,7 +2,7 @@
 /**
  * Module dependencies.
  */
-var Engine = require('co-efficient').Engine;
+var Engine = require('efficient').Engine;
 var delegate = require('delegates');
 var merge = require('merge-descriptors');
 var debug = require('debug')('koa-efficient');
@@ -10,17 +10,17 @@ var debug = require('debug')('koa-efficient');
 /**
  * Exports `coefficient`.
  */
-module.exports = coefficient;
+module.exports = koaEfficient;
 
 /**
  * Add `render` method and define `locals` getter and
  * setters.
  *
  *   Options :
- *    - viewEngine {Engine}     the Co-Efficient engine to render views
- *    - viewOptions {Object}    the Co-Efficient engine view options (ignored if viewEngine is specified)
- *    - layoutEngine {Engine}   the Co-Efficient engine to render layouts
- *    - layoutOptions {Object}  the Co-Efficient engine layout options (ignored if layoutEngine is specified)
+ *    - viewEngine {Engine}     the Efficient engine to render views
+ *    - viewOptions {Object}    the Efficient engine view options (ignored if viewEngine is specified)
+ *    - layoutEngine {Engine}   the Efficient engine to render layouts
+ *    - layoutOptions {Object}  the Efficient engine layout options (ignored if layoutEngine is specified)
  *    - contextMap {Object}     define the context mapping
  *    - data {Object}           (Optional) a global data object which will be merged with the rendering data
  *    - debug {Boolean}         print debug traces
@@ -29,7 +29,7 @@ module.exports = coefficient;
  * @param {Object} options    the module options.
  * @api public
  */
-function coefficient(options) {
+function koaEfficient(options) {
   options = options || {};
 
   var viewEngine = options.viewEngine;
@@ -76,7 +76,7 @@ function coefficient(options) {
         /**
          * Get the layout to use
          *
-         * @return {name} layout
+         * @return {string} layout
          * @api public
          */
         get layout() {
@@ -86,11 +86,11 @@ function coefficient(options) {
         /**
          * Get the layout to use
          *
-         * @return {name} layout
+         * @return {string} layout
          * @api public
          */
-        set layout(name) {
-          options.layout = name;
+        set layout(layout) {
+          options.layout = layout;
           debug('set layout to %s', options.layout);
         }
 
@@ -141,7 +141,7 @@ function coefficient(options) {
             data[viewKey] = yield viewEngine.render(viewTemplate, data);
           }
         }
-        
+
         if (layout) {
           showDebug && debug('render layout `%s` with %s', layout, JSON.stringify(data, stringifyReplacer(), 2));
           this.body = yield layoutEngine.render(layout, data);
@@ -245,10 +245,10 @@ function mapContextToData(ctx, data, mapping) {
 
   for (; i < iLen; ++i) {
     key = keys[i];
-    ctxInfo = getOrCreateKey(ctx, key);
+    ctxInfo = getOrCreateKey(ctx, mapping[key]);
 
     if (ctxInfo.el[ctxInfo.key]) {
-      dataInfo = getOrCreateKey(data, mapping[key], true);
+      dataInfo = getOrCreateKey(data, key, true);
       dataInfo.el[dataInfo.key] = ctxInfo.el[ctxInfo.key];
     }
   }
