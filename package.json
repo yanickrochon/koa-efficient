@@ -1,6 +1,6 @@
 {
   "name": "koa-efficient",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Efficient template engine middleware for Koa",
   "author": "Yanick Rochon <yanick.rochon@gmail.com>",
   "keywords": [
@@ -31,7 +31,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "delegates": "0.1.0",
-    "efficient": "1.0.2-rc",
+    "efficient": "1.0.3-rc",
     "merge-descriptors": "1.0.0"
   },
   "license": "MIT",
