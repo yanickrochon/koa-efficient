@@ -1,17 +1,18 @@
-
+'use strict';
 
 describe('Test middleware', function () {
 
-  var request = require('supertest');
-  var koa = require('koa');
-  var path = require('path');
+  const request = require('supertest');
+  const koa = require('koa');
+  const path = require('path');
 
-  var Engine = require('efficient').Engine;
+  const Engine = require('efficient').Engine;
 
-  var middleware = require('..');
+  const middleware = require('..');
+
 
   it('should render', function (done) {
-    var app = koa();
+    const app = koa();
 
     app.use(middleware({
       layout: 'layout',
@@ -61,7 +62,7 @@ describe('Test middleware', function () {
 
 
   it('should map context data correctly', function (done) {
-    var app = koa();
+    const app = koa();
 
     app.use(middleware({
       layout: 'layout',
@@ -131,8 +132,8 @@ describe('Test middleware', function () {
 
 
   it('should send headers', function (done) {
-    var app = koa();
-    var headerValue;
+    const app = koa();
+    let headerValue;
 
     app.use(middleware({
       httpHeaders: {

@@ -1,6 +1,6 @@
 {
   "name": "koa-efficient",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Efficient template engine middleware for Koa",
   "author": "Yanick Rochon <yanick.rochon@gmail.com>",
   "keywords": [
@@ -31,15 +31,15 @@
   "dependencies": {
     "debug": "^2.2.0",
     "delegates": "1.0.0",
-    "efficient": "1.0.9",
+    "efficient": "1.0.11",
     "merge-descriptors": "1.0.0"
   },
   "license": "MIT",
   "devDependencies": {
-    "istanbul": "^0.4.1",
+    "istanbul": "^0.4.2",
     "koa": "^1.1.2",
     "mocha": "^2.3.4",
-    "should": "^8.0.2",
+    "should": "^8.1.1",
     "supertest": "^1.1.0"
   }
 }
